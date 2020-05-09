@@ -52,6 +52,7 @@ function updateSprintMetrics() {
   var key = $('Ref', 'B1').getValue();
   var messageCell = $('Metrics', 'D1');
   var doneStates = ['CLOSED', 'READY TO GO LIVE', 'PROD VERIFICATION'];
+  var reworkTags = ['PRODUCTION', 'BUG'];
   
   // fetch
   $clickup
@@ -69,6 +70,7 @@ function updateSprintMetrics() {
   $(row, 5).setValue($clickup.calc.plannedEffort($clickup.current.tasks, start.getTime()));
   $(row, 6).setValue($clickup.calc.actualEffort($clickup.current.tasks, doneStates));
   $(row, 7).setValue($clickup.calc.unplannedEffort($clickup.current.tasks, start.getTime(), doneStates));
+  $(row, 8).setValue($clickup.calc.reworkEffort($clickup.current.tasks, reworkTags));
   
   messageCell.setValue('');
 }

@@ -148,6 +148,26 @@ $clickup.tasks = function(options = {}) {
 }
 
 $clickup.calc = {};
+$clickup.util = {};
+
+$clickup.util.hasTag = function(task, tag) {  
+  for (var i in task.tags) {
+    if (task.tags[i].name.toUpperCase() === tag)
+      return true;
+  }
+  
+  return false;
+};
+
+$clickup.util.hasAnyTag = function(task, tags) {  
+  for (var i in tags) {
+    if ($clickup.util.hasTag(task, tags[i])) {
+      return true;
+    } 
+  }
+  
+  return false;
+};
 
 $clickup.calc.plannedEffort = function(tasks, date) {
   var effort = 0;
@@ -179,3 +199,14 @@ $clickup.calc.unplannedEffort = function(tasks, date, doneStates) {
   });
   return effort;
 };
+
+$clickup.calc.reworkEffort = function(tasks, reworkTags) {
+  var effort = 0;
+  tasks.forEach(function(task) {
+    if ($clickup.util.hasAnyTag(task, reworkTags)) {
+      effort += (task.time_estimate / 3600000);
+    }
+  });
+  return effort;
+};
+
