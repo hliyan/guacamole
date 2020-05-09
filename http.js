@@ -4,11 +4,11 @@
  */
 $http = function(url, headers) {  
   $http.response = UrlFetchApp.fetch(url, {
-    headers : headers,
-    muteHttpExceptions : true
+    headers : headers//,
+    //muteHttpExceptions : true
   });
   return $http;
-}
+};
 
 /**
  * Get last response data in specified format or as raw text.
@@ -16,6 +16,10 @@ $http = function(url, headers) {
  * $http.data(), $http.data('json')
  */
 $http.data = function(fmt) {
+  if ($http.error()) {
+    return null;
+  }
+  
   var data = $http.response.getContentText();
   if ((typeof fmt) == 'undefined')
     return data;
@@ -24,4 +28,15 @@ $http.data = function(fmt) {
     return $http.jsonData;
   }
   return data;
-}
+};
+
+$http.error = function() {
+  if ($http.response.getResponseCode() == 200) {
+    return null;
+  }
+  
+  return {
+    code: $http.response.getResponseCode(),
+    message: $http.response.getContentText()
+  };
+};

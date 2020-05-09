@@ -3,5 +3,14 @@
   "dependencies": {
   },
   "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8"
+  "runtimeVersion": "V8",
+  "sheets": {
+    "macros": [{
+      "menuName": "update",
+      "functionName": "update"
+    }, {
+      "menuName": "updateSprintMetrics",
+      "functionName": "updateSprintMetrics"
+    }]
+  }
 }

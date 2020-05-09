@@ -14,6 +14,11 @@ $clickup = function() {
   return this;
 }
 
+$clickup.notify = function(callback) {
+  $clickup._notify = callback;
+  return $clickup;
+};
+
 $clickup.auth = function(key) {
   $clickup.base = 'https://api.clickup.com/api/v2';
   $clickup.headers = {
@@ -27,8 +32,13 @@ $clickup.auth = function(key) {
 }
 
 $clickup._fetch = function(path) {
-  console.log(path);
-  return $http($clickup.base + path, $clickup.headers).data('json');
+  $clickup._notify({message:'fetching ' + path});
+  var data = $http($clickup.base + path, $clickup.headers).data('json');
+  if ($http.error()) {
+    $clickup._notify($http.error());
+    return null;
+  }
+  return data;
 }
 
 $clickup.team = function(name) {
@@ -78,7 +88,8 @@ $clickup.folder = function(name) {
   $clickup.current.tasks = null;
   $clickup.current.error = null;
   
-  $clickup._fetch('/space/' + $clickup.current.space.id + '/folder').folders.forEach(function(folder) {
+  var data = $clickup._fetch('/space/' + $clickup.current.space.id + '/folder');
+  data.folders.forEach(function(folder) {
     if (folder.name === name) {
       $clickup.current.folder = folder;
     }
@@ -136,3 +147,35 @@ $clickup.tasks = function(options = {}) {
   return $clickup;
 }
 
+$clickup.calc = {};
+
+$clickup.calc.plannedEffort = function(tasks, date) {
+  var effort = 0;
+  tasks.forEach(function(task) {
+    if (task.date_created < date) {
+      effort += (task.time_estimate / 3600000);
+    }
+  });
+  return effort;
+};
+
+$clickup.calc.actualEffort = function(tasks, doneStates) {
+  var effort = 0;
+  tasks.forEach(function(task) {
+    if (doneStates.includes(task.status.status.toUpperCase())) {
+      effort += (task.time_estimate / 3600000);
+    }
+  });
+  return effort;
+};
+
+
+$clickup.calc.unplannedEffort = function(tasks, date, doneStates) {
+  var effort = 0;
+  tasks.forEach(function(task) {
+    if ((task.date_created > date) && (doneStates.includes(task.status.status.toUpperCase()))) {
+      effort += (task.time_estimate / 3600000);
+    }
+  });
+  return effort;
+};
