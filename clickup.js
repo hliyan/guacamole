@@ -125,16 +125,13 @@ $clickup.tasks = function(options = {}) {
     }
   }
   
-  /*if (options.subtasks) 
-    query += 'subtasks=true&';
-  if (options.include_closed)
-    query += 'include_closed=true&';*/
+  var page = 0, limit = 100, data = null;
+  $clickup.current.tasks = [];
   
-  $clickup.current.tasks = $clickup._fetch('/list/' + $clickup.current.list.id + '/task' + query).tasks;
-  
-  if ($clickup.current.tasks == null) {
-    $clickup.current.error = 'Tasks for list ' + name + ' could not be set';
-  }
+  do {
+    data = $clickup._fetch('/list/' + $clickup.current.list.id + '/task' + query + 'page=' + page++);
+    $clickup.current.tasks = $clickup.current.tasks.concat(data.tasks);
+  } while (data.tasks.length == limit);
   
   return $clickup;
 }

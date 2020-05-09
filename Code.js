@@ -6,7 +6,12 @@ function initUI() {
 }
 
 function update() {  
+  var row = 6;
+  var maxCols = 6;
+  var maxRows = 300;
   $.sheet = $('Sheet1');
+  $(row, 1, maxRows, maxCols).clear();
+  $(row, 2).setValue('Fetching...');
   
   var team   = $(1,2).getValue();
   var space  = $(2,2).getValue();
@@ -21,13 +26,8 @@ function update() {
   .folder(folder)
   .list(list)
   .tasks({subtasks: true, include_closed: true});
-  
-  var row = 6;
-  var maxCols = 6;
-  var maxRows = 200;
-  $(row, 1, maxRows, maxCols).clear();
 
-  $(++row,1).setValue('Task ID');
+  $(row,1).setValue('Task ID');
   $(row,2).setValue('Task Name');
   $(row,3).setValue('Task Status');
   $(row,4).setValue('Estimate');
@@ -36,7 +36,7 @@ function update() {
   $clickup.current.tasks.forEach(function(task) {
     $(++row,1).setValue(task.id);
     $(row,2).setValue(task.name);
-    $(row,3).setValue(task.status.status);  
+    $(row,3).setValue(task.status.status.toUpperCase());  
     $(row,4).setValue(task.time_estimate/(3600*1000));
     $(row,5).setValue(task.parent);
     $(row,6).setValue(task.url);
