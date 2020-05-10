@@ -1,12 +1,12 @@
 # Guacamole
 
-<strong>G</strong>oogle <strong>A</strong>ppScript for the <strong>C</strong>lickup API.
+<strong>G</strong>oogle <strong>A</strong>ppScript for the <strong>C</strong>lickup <strong>A</strong>PI.
 
 # Contents
 
 ## sheets.js
 
-This is an old-fashioned jQuery-like Google AppScript API for cell access in Google Sheets. Meant for ease of use by non-develoeprs:
+This is an old-fashioned jQuery-like Google AppScript API for cell access in Google Sheets. Optimized for ease of use by non-developers:
 
 E.g.
 ```
