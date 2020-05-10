@@ -1,6 +1,6 @@
 # Guacamole
 
-Guacamole is a Google AppScript integration for Clickup.
+<strong>G</strong>oogle <strong>A</strong>ppScript for the <strong>C</strong>lickup API.
 
 # Contents
 
