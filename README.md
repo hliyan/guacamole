@@ -28,3 +28,22 @@ E.g.
 let data = $http('www.something.com', {Authorization: 'token', method: 'get'}).data('json');
 ```
 
+## clickup.js
+
+A fluent Google AppScript wrapper for the Clickup API.
+
+E.g.
+```
+    $clickup
+      .auth('key')
+      .team('Different')
+      .space('Product - 2020')
+      .folder('TDTU')
+      .list('Apr 27 - May 08')
+      .tasks();
+    console.log($clickup.current.tasks);
+```
+
+## Code.js
+
+A sample implementation.
