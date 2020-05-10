@@ -169,10 +169,11 @@ $clickup.util.hasAnyTag = function(task, tags) {
   return false;
 };
 
-$clickup.calc.plannedEffort = function(tasks, date) {
+$clickup.calc.plannedEffort = function(tasks, startDate) {
   var effort = 0;
+  var dayAfterStartDate = startDate.getTime() + (3600 * 1000 * 24);
   tasks.forEach(function(task) {
-    if (task.date_created < date) {
+    if (task.date_created < dayAfterStartDate) {
       effort += (task.time_estimate / 3600000);
     }
   });
@@ -190,20 +191,21 @@ $clickup.calc.actualEffort = function(tasks, doneStates) {
 };
 
 
-$clickup.calc.unplannedEffort = function(tasks, date, doneStates) {
+$clickup.calc.unplannedEffort = function(tasks, startDate, doneStates) {
   var effort = 0;
+  var dayAfterStartDate = startDate.getTime() + (3600 * 1000 * 24);
   tasks.forEach(function(task) {
-    if ((task.date_created > date) && (doneStates.includes(task.status.status.toUpperCase()))) {
+    if ((task.date_created > dayAfterStartDate) && (doneStates.includes(task.status.status.toUpperCase()))) {
       effort += (task.time_estimate / 3600000);
     }
   });
   return effort;
 };
 
-$clickup.calc.reworkEffort = function(tasks, reworkTags) {
+$clickup.calc.reworkEffort = function(tasks, reworkTags, doneStates) {
   var effort = 0;
   tasks.forEach(function(task) {
-    if ($clickup.util.hasAnyTag(task, reworkTags)) {
+    if ($clickup.util.hasAnyTag(task, reworkTags) && (doneStates.includes(task.status.status.toUpperCase()))) {
       effort += (task.time_estimate / 3600000);
     }
   });
