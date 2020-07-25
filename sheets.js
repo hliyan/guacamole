@@ -42,3 +42,33 @@ function $(a, r, s, t, u) {
         return sheet.getRange(r);
   }
 }
+
+// returns the row number of the cell where $value appears in $range
+$.rowOf = function(value, range) {
+  let values = range.getValues();
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] == value)
+      return range.getRow() + i;
+  }
+  return -1;
+}
+
+// returns the column number of the cell where $value appears in $range
+$.columnOf = function (value, range) {
+  let values = range.getValues()[0];
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] == value)
+      return range.getColumn() + i;
+  }
+  return -1;
+}
+
+$.vlookup = function(range, name, index = 1) {
+  let values = range.getValues();
+  for (let i = 0; i < values.length; i++) {
+    if (values[i][0] == name) {
+      return values[i][index];
+    }
+  }
+  return null;
+};

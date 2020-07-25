@@ -1,8 +1,8 @@
 /**
  * Issues an HTTP GET request with given auth token.
- * USAGE: $http('www.something.com', {Authorization: 'token', method: 'get'});
+ * USAGE: $http('www.something.com', {Authorization: 'token', method: 'get'}).data('json');
  */
-$http = function(url, headers) {  
+function $http(url, headers) {  
   $http.response = UrlFetchApp.fetch(url, {
     headers : headers//,
     //muteHttpExceptions : true
@@ -40,3 +40,4 @@ $http.error = function() {
     message: $http.response.getContentText()
   };
 };
+

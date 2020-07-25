@@ -2,6 +2,7 @@
  * A fluent API to fetch clickup data to local memory.
  * USAGE: 
  *   $clickup
+ *     .notify(callback)
  *     .auth('key')
  *     .team('Different')
  *     .space('Product - 2020')
@@ -10,7 +11,7 @@
  *     .tasks();
  *   console.log($clickup.current.tasks);
  */
-$clickup = function() {
+function $clickup() {
   return this;
 }
 
@@ -115,6 +116,9 @@ $clickup.list = function(name) {
   
   if ($clickup.current.list == null) {
     $clickup.current.error = 'List ' + name + ' could not be set';
+    $clickup._notify({error: true, message:'Failed to fetch list ' + name});
+  } else {
+    $clickup._notify({message:'Fetched list: ' + name + ' = ' + $clickup.current.list.id});
   }
   
   return $clickup;
